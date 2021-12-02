@@ -7,6 +7,7 @@ class Position:
 
     horizontal: int = 0
     depth: int = 0
+    # Aim is used in part 2 and changes how depth gets updated
     aim: int = None
     use_aim: bool = False
 
@@ -18,7 +19,7 @@ class Position:
             self.aim = aim
 
     def forward(self, distance: int = 0):
-        self.horizontal = self.horizontal + distance
+        self.horizontal += distance
         if self.use_aim:
             self.depth += self.aim * distance
 
