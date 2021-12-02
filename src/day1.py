@@ -7,18 +7,19 @@ def count_increases(input: List[int] = []) -> int:
     for index, line in enumerate(input):
         if index > 0:
             if line > input[index - 1]:
-                count_of_increases = count_of_increases + 1
+                count_of_increases += 1
     return count_of_increases
 
 
-def get_sliding_window_measurements(input: List[int]) -> List[int]:
+def get_sliding_window_measurements(
+    input: List[int], window_size: int = 3
+) -> List[int]:
     """Return a list of three-measurement windows"""
     sliding_window_measurements = []
-    for index, line in enumerate(input):
-        if index < len(input) - 2:
-            sliding_window_measurements.append(
-                line + input[index + 1] + input[index + 2]
-            )
+    i = 0
+    while i < len(input) - (window_size - 1):
+        sliding_window_measurements.append(sum(input[i : i + window_size]))
+        i += 1
     return sliding_window_measurements
 
 
