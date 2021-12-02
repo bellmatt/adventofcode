@@ -2,6 +2,7 @@ from typing import List
 
 
 def count_increases(input: List[int] = []) -> int:
+    """Count the number of times a measurement is higher than the previous one"""
     count_of_increases = 0
     for index, line in enumerate(input):
         if index > 0:
@@ -11,6 +12,7 @@ def count_increases(input: List[int] = []) -> int:
 
 
 def get_sliding_window_measurements(input: List[int]) -> List[int]:
+    """Return a list of three-measurement windows"""
     sliding_window_measurements = []
     for index, line in enumerate(input):
         if index < len(input) - 2:
