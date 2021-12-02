@@ -4,6 +4,7 @@ from dataclasses import dataclass
 @dataclass
 class Position:
     """Class that represents a Position"""
+
     horizontal: int = 0
     depth: int = 0
     aim: int = None
@@ -15,19 +16,19 @@ class Position:
         if aim is not None:
             self.use_aim = True
             self.aim = aim
-    
-    def forward(self,distance:int=0):
+
+    def forward(self, distance: int = 0):
         self.horizontal = self.horizontal + distance
         if self.use_aim:
             self.depth += self.aim * distance
 
-    def down(self,distance:int=0):
+    def down(self, distance: int = 0):
         if self.use_aim:
             self.aim += distance
         else:
             self.depth += distance
 
-    def up(self,distance:int=0):
+    def up(self, distance: int = 0):
         if self.use_aim:
             self.aim -= distance
         else:
@@ -48,9 +49,7 @@ if __name__ == "__main__":
         # Part 1:
         recalculate_position(current_position, input)
         # Part 2:
-        recalculate_position(
-            current_position_with_aim, input
-        )
+        recalculate_position(current_position_with_aim, input)
     print("part 1:")
     print(current_position.horizontal * current_position.depth)
     print("part 2:")
