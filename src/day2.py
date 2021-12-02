@@ -55,7 +55,9 @@ if __name__ == "__main__":
     current_position = Position()
     current_position_with_aim = Position()
     for input in lines:
+        # Part 1:
         current_position = recalculate_position(current_position, input)
+        # Part 2:
         current_position_with_aim = recalculate_position_with_aim(
             current_position_with_aim, input
         )
