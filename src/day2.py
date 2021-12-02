@@ -3,69 +3,55 @@ from dataclasses import dataclass
 
 @dataclass
 class Position:
+    """Class that represents a Position"""
     horizontal: int = 0
     depth: int = 0
-    aim: int = 0
+    aim: int = None
+    use_aim: bool = False
 
-    def __init__(self, horizontal: int = 0, depth: int = 0, aim: int = 0):
+    def __init__(self, horizontal: int, depth: int, aim: int = None):
         self.horizontal = horizontal
         self.depth = depth
-        self.aim = aim
+        if aim is not None:
+            self.use_aim = True
+            self.aim = aim
+    
+    def forward(self,distance:int=0):
+        self.horizontal = self.horizontal + distance
+        if self.use_aim:
+            self.depth += self.aim * distance
 
+    def down(self,distance:int=0):
+        if self.use_aim:
+            self.aim += distance
+        else:
+            self.depth += distance
 
-@dataclass
-class Instruction:
-    direction: str
-    distance: int
-
-    def __init__(self, input: str):
-        self.direction, dist = input.split(" ")
-        self.distance = int(dist)
+    def up(self,distance:int=0):
+        if self.use_aim:
+            self.aim -= distance
+        else:
+            self.depth -= distance
 
 
 def recalculate_position(position: Position, instruction_input: str) -> Position:
     """Returns an updated position after executing an instruction"""
-    instruction = Instruction(instruction_input)
-    if instruction.direction == "forward":
-        position.horizontal = position.horizontal + instruction.distance
-    if instruction.direction == "up":
-        position.depth = position.depth - instruction.distance
-    if instruction.direction == "down":
-        position.depth = position.depth + instruction.distance
-    return position
-
-
-def recalculate_position_with_aim(
-    position: Position, instruction_input: str
-) -> Position:
-    """Returns an updated position after executing an instruction"""
-    instruction = Instruction(instruction_input)
-    if instruction.direction == "forward":
-        position.horizontal = position.horizontal + instruction.distance
-        position.depth = position.depth + (position.aim * instruction.distance)
-    if instruction.direction == "up":
-        position.aim = position.aim - instruction.distance
-    if instruction.direction == "down":
-        position.aim = position.aim + instruction.distance
-    return position
+    direction, distance = instruction_input.split(" ")
+    getattr(position, direction)(int(distance))
 
 
 if __name__ == "__main__":
     lines = open("./src/day2_input.txt", "r").readlines()
-    current_position = Position()
-    current_position_with_aim = Position()
+    current_position = Position(0, 0)
+    current_position_with_aim = Position(0, 0, 0)
     for input in lines:
         # Part 1:
-        current_position = recalculate_position(current_position, input)
+        recalculate_position(current_position, input)
         # Part 2:
-        current_position_with_aim = recalculate_position_with_aim(
+        recalculate_position(
             current_position_with_aim, input
         )
     print("part 1:")
-    print(f"h: {current_position.horizontal} d: {current_position.depth} ")
     print(current_position.horizontal * current_position.depth)
     print("part 2:")
-    print(
-        f"h: {current_position_with_aim.horizontal} d: {current_position_with_aim.depth} a: {current_position_with_aim.aim}"
-    )
     print(current_position_with_aim.horizontal * current_position_with_aim.depth)

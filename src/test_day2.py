@@ -16,9 +16,9 @@ import pytest
 )
 def test_position_change(cur_h, cur_d, instruction, exp_h, exp_d):
     current_pos = day2.Position(cur_h, cur_d)
-    assert exp_h == day2.recalculate_position(current_pos, instruction).horizontal
-    current_pos = day2.Position(cur_h, cur_d)
-    assert exp_d == day2.recalculate_position(current_pos, instruction).depth
+    day2.recalculate_position(current_pos, instruction)
+    assert exp_h == current_pos.horizontal
+    assert exp_d == current_pos.depth
 
 
 @pytest.mark.parametrize(
@@ -36,10 +36,7 @@ def test_position_change_with_aim(
     cur_h, cur_a, cur_d, instruction, exp_h, exp_a, exp_d
 ) -> List:
     current_pos = day2.Position(cur_h, cur_d, cur_a)
-    assert (
-        exp_h == day2.recalculate_position_with_aim(current_pos, instruction).horizontal
-    )
-    current_pos = day2.Position(cur_h, cur_d, cur_a)
-    assert exp_d == day2.recalculate_position_with_aim(current_pos, instruction).depth
-    current_pos = day2.Position(cur_h, cur_d, cur_a)
-    assert exp_a == day2.recalculate_position_with_aim(current_pos, instruction).aim
+    day2.recalculate_position(current_pos, instruction)
+    assert exp_h == current_pos.horizontal
+    assert exp_d == current_pos.depth
+    assert exp_a == current_pos.aim
