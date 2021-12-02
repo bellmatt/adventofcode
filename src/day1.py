@@ -1,16 +1,16 @@
 from typing import List
 
 
-def day1part1(input: List[int] = []) -> int:
+def count_increases(input: List[int] = []) -> int:
     count_of_increases = 0
     for index, line in enumerate(input):
         if index > 0:
-            if int(line) > int(input[index - 1]):
+            if line > input[index - 1]:
                 count_of_increases = count_of_increases + 1
     return count_of_increases
 
 
-def get_sliding_window_measurements(input: List[int]) -> List:
+def get_sliding_window_measurements(input: List[int]) -> List[int]:
     sliding_window_measurements = []
     for index, line in enumerate(input):
         if index < len(input) - 2:
@@ -20,21 +20,10 @@ def get_sliding_window_measurements(input: List[int]) -> List:
     return sliding_window_measurements
 
 
-def day1part2(input: List[int] = []) -> int:
-    count_of_increases = 0
-    sliding_window_measurements = get_sliding_window_measurements(input)
-    for index, line in enumerate(input):
-        if index > 0 and index < len(input) - 2:
-            if (
-                sliding_window_measurements[index]
-                > sliding_window_measurements[index - 1]
-            ):
-                count_of_increases = count_of_increases + 1
-    return count_of_increases
-
-
 if __name__ == "__main__":
     lines = open("./src/day1_input.txt", "r").readlines()
     input_list = [int(line.rstrip()) for line in lines]
-    print(day1part1(input_list))
-    print(day1part2(input_list))
+    # Part 1:
+    print(count_increases(input_list))
+    # Part 2:
+    print(count_increases(get_sliding_window_measurements(input_list)))
