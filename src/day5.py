@@ -41,20 +41,28 @@ class VentPosition:
             if self.line_start.y < self.line_end.y:
                 # (1,1) -> (3,3)
                 for i, x in enumerate(range(self.line_start.x, self.line_end.x + 1, 1)):
-                    self.positions.append(Position(self.line_start.x+i, self.line_start.y+i))
+                    self.positions.append(
+                        Position(self.line_start.x + i, self.line_start.y + i)
+                    )
             else:
                 # (1,3) -> (3,1)
                 for i, x in enumerate(range(self.line_start.x, self.line_end.x + 1, 1)):
-                    self.positions.append(Position(self.line_start.x+i, self.line_start.y-i))
+                    self.positions.append(
+                        Position(self.line_start.x + i, self.line_start.y - i)
+                    )
         elif self.line_start.x > self.line_end.x:
             if self.line_start.y < self.line_end.y:
                 # (3,1) -> (1,3)
                 for i, x in enumerate(range(self.line_end.x, self.line_start.x + 1, 1)):
-                    self.positions.append(Position(self.line_start.x-i, self.line_start.y+i))
+                    self.positions.append(
+                        Position(self.line_start.x - i, self.line_start.y + i)
+                    )
             else:
                 # (3,3) -> (1,1)
                 for i, x in enumerate(range(self.line_end.x, self.line_start.x + 1, 1)):
-                    self.positions.append(Position(self.line_start.x-i, self.line_start.y-i))
+                    self.positions.append(
+                        Position(self.line_start.x - i, self.line_start.y - i)
+                    )
 
 
 def parse_input(input: List[str]):
