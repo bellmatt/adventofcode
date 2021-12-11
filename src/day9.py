@@ -167,8 +167,8 @@ def find_basin(
 
 
 def print_map(input: List[List[str]]) -> None:
-    for i, x in enumerate(input):
-        for j, y in enumerate(input[i]):
+    for i in range(len(input)):
+        for j in range(len(input[i])):
             print(input[i][j], end=" ")
         print("")
 
