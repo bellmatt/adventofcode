@@ -87,5 +87,6 @@ if __name__ == "__main__":
         else:
             print("folding over y")
             paper = fold_over_y(paper, instruction)
+    print_map(paper)
 
     print(count_dots(paper))
