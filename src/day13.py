@@ -11,7 +11,17 @@ def fold_over_y(input: List[List[str]], instruction: Tuple[str, int]) -> List[st
         input[i] = [
             "#" if x[0] == "#" or x[1] == "#" else "." for x in zip(input[i], bottom)
         ]
+    return input
 
+
+def fold_over_x(input: List[List[str]], instruction: Tuple[str, int]) -> List[str]:
+    for i, line in enumerate(input):
+        second_half = line[instruction[1] + 1 :]
+        second_half.reverse()
+        input[i] = [
+            "#" if x[0] == "#" or x[1] == "#" else "."
+            for x in zip(line[: instruction[1]], second_half)
+        ]
     return input
 
 
@@ -58,7 +68,7 @@ def count_dots(input: List[List[str]]) -> int:
 
 
 if __name__ == "__main__":
-    input = open("./src/day13_testinput.txt", "r").readlines()
+    input = open("./src/day13_input.txt", "r").readlines()
     dots = []
     fold_instructions = []
     for line in input:
@@ -70,6 +80,12 @@ if __name__ == "__main__":
                 (line.split("=")[0].split()[2], int(line.split("=")[1]))
             )
     paper = plot_map(dots, get_map_dimensions(dots))
-    folded_paper = fold_over_y(paper, fold_instructions[0])
+    for instruction in fold_instructions:
+        if instruction[0] == "x":
+            print("folding over x")
+            paper = fold_over_x(paper, instruction)
+        else:
+            print("folding over y")
+            paper = fold_over_y(paper, instruction)
 
-    print(count_dots(folded_paper))
+    print(count_dots(paper))
