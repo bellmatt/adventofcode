@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 import dataclasses
 from typing import List
+from math import prod
 
 
 @dataclass
@@ -8,10 +9,6 @@ class Packet:
     packet_version: int
     packet_type_id: int
     binary: str
-
-
-@dataclass
-class LiteralValue(Packet):
     value: int
 
 
@@ -25,11 +22,11 @@ class BITS:
     hex: str
     binary: str
     packet: Packet
+    value: int = 0
 
     def __init__(self, hex: str):
         self.hex = hex
         self.binary = f"{int(hex, 16):0>{len(hex)*4}b}"
-        # print(self.binary)
         i = 0
         self.packet = parse_packet(self.binary[i:])
         print(self.packet)
@@ -53,7 +50,7 @@ def parse_packet(binary: str) -> Packet:
                 value_binary_str += binary[j + 1 : j + 5]
                 break
         j += 5
-        packet = LiteralValue(
+        packet = Packet(
             packet_version, packet_type_id, binary[i:j], int(value_binary_str, 2)
         )
         return packet
@@ -75,12 +72,18 @@ def parse_packet(binary: str) -> Packet:
             # next 11 bits are the number of sub packets
             packet_length += 11
             num_sub_packets = int(binary[i + 7 : i + 18], 2)
-            for n in range(num_sub_packets):
+            for _ in range(num_sub_packets):
+                # we don't know the length of the packet, so provide all the binary
                 new_packet = parse_packet(binary[i + packet_length :])
                 packet_length += len(new_packet.binary)
                 sub_packets.append(new_packet)
+        # create the packet, passing the chunk of binary based on the defined or measured length
         packet = Operator(
-            packet_version, packet_type_id, binary[i : i + packet_length], sub_packets
+            packet_version,
+            packet_type_id,
+            binary[i : i + packet_length],
+            0,
+            sub_packets,
         )
     return packet
 
@@ -94,6 +97,50 @@ def version_sum(packet: dict) -> int:
     return total
 
 
+def calculate_packet_value(packet: dict) -> int:
+    total_value = 0
+    if packet["packet_type_id"] == 0:
+        total_value += sum(
+            [calculate_packet_value(packet) for packet in packet["sub_packets"]]
+        )
+    if packet["packet_type_id"] == 1:
+        total_value += prod(
+            [calculate_packet_value(packet) for packet in packet["sub_packets"]]
+        )
+    if packet["packet_type_id"] == 2:
+        total_value += min(
+            [calculate_packet_value(packet) for packet in packet["sub_packets"]]
+        )
+    if packet["packet_type_id"] == 3:
+        total_value += max(
+            [calculate_packet_value(packet) for packet in packet["sub_packets"]]
+        )
+    if packet["packet_type_id"] == 4:
+        total_value += packet["value"]
+    if packet["packet_type_id"] == 5:
+        total_value += (
+            1
+            if calculate_packet_value(packet["sub_packets"][0])
+            > calculate_packet_value(packet["sub_packets"][1])
+            else 0
+        )
+    if packet["packet_type_id"] == 6:
+        total_value += (
+            1
+            if calculate_packet_value(packet["sub_packets"][1])
+            > calculate_packet_value(packet["sub_packets"][0])
+            else 0
+        )
+    if packet["packet_type_id"] == 7:
+        total_value += (
+            1
+            if calculate_packet_value(packet["sub_packets"][1])
+            == calculate_packet_value(packet["sub_packets"][0])
+            else 0
+        )
+    return total_value
+
+
 if __name__ == "__main__":
     input = open("./src/day16_input.txt", "r").readline().rstrip()
     # input = "D2FE28"
@@ -105,3 +152,4 @@ if __name__ == "__main__":
     # input = "A0016C880162017C3686B18A3D4780"
     transmission = BITS(input)
     print(version_sum(dataclasses.asdict(transmission.packet)))
+    print(calculate_packet_value(dataclasses.asdict(transmission.packet)))
