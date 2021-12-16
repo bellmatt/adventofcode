@@ -1,11 +1,14 @@
-from typing import List, Tuple
-
 import heapq
 
 
 if __name__ == "__main__":
     risk_map = [
-        list(int(x) for x in list(line.strip()))
+        list(
+            int(x) + i + j if int(x) + i + j < 10 else int(x) + i + j - 9
+            for i in range(5)
+            for x in list(line.strip())
+        )
+        for j in range(5)
         for line in open("./src/day15_input.txt", "r").readlines()
     ]
 
