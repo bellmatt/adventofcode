@@ -1,3 +1,5 @@
+from pathlib import PurePath
+import sys
 from typing import List, Tuple
 
 
@@ -68,7 +70,7 @@ def count_dots(input: List[List[str]]) -> int:
 
 
 if __name__ == "__main__":
-    input = open("./src/day13_input.txt", "r").readlines()
+    input = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
     dots = []
     fold_instructions = []
     for line in input:

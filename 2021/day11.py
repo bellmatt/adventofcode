@@ -1,3 +1,5 @@
+from pathlib import PurePath
+import sys
 from typing import Counter, List
 
 
@@ -79,7 +81,7 @@ def print_map(input: List[List[str]]) -> None:
 if __name__ == "__main__":
     octopus_map = [
         list(int(x) for x in list(line.strip()))
-        for line in open("./src/day11_input.txt", "r").readlines()
+        for line in open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
     ]
     flashes = []
     # Part 1: set to 100

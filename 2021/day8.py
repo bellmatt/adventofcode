@@ -1,5 +1,8 @@
+from pathlib import PurePath
+import sys
+
 if __name__ == "__main__":
-    input = open("./src/day8_input.txt", "r").readlines()
+    input = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
 
     # Part 1
     count_1 = 0

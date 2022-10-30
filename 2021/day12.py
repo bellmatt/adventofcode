@@ -1,3 +1,5 @@
+from pathlib import PurePath
+import sys
 from typing import List, Tuple
 
 
@@ -58,7 +60,7 @@ def find_next_route_options(
 if __name__ == "__main__":
     cave_system = [
         tuple(line.rstrip().split("-"))
-        for line in open("./src/day12_input.txt", "r").readlines()
+        for line in open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
     ]
     curr_pos = "start"
     paths = [[curr_pos]]

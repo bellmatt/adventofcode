@@ -1,13 +1,14 @@
+from pathlib import PurePath
+import sys
 from typing import List
 
 
-def count_increases(input: List[int] = []) -> int:
+def count_increases(input: List[int]) -> int:
     """Count the number of times a measurement is higher than the previous one"""
     count_of_increases = 0
     for index, line in enumerate(input):
-        if index > 0:
-            if line > input[index - 1]:
-                count_of_increases += 1
+        if index > 0 and line > input[index - 1]:
+            count_of_increases += 1
     return count_of_increases
 
 
@@ -24,7 +25,7 @@ def get_sliding_window_measurements(
 
 
 if __name__ == "__main__":
-    lines = open("./src/day1_input.txt", "r").readlines()
+    lines = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
     input_list = [int(line.rstrip()) for line in lines]
     # Part 1:
     print(count_increases(input_list))

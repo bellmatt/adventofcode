@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from pathlib import PurePath
+import sys
 from typing import Counter, List, Tuple
 
 
@@ -102,7 +104,7 @@ def count_overlapping_positions(vents: List[VentPosition], size: int) -> int:
 
 
 if __name__ == "__main__":
-    input = open("./src/day5_input.txt", "r").readlines()
+    input = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
     vents, size = parse_input(input)
     pos_counts = count_overlapping_positions(vents, size)
     count_gt2 = 0

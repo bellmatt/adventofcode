@@ -1,4 +1,6 @@
 import heapq
+from pathlib import PurePath
+import sys
 
 
 if __name__ == "__main__":
@@ -9,7 +11,7 @@ if __name__ == "__main__":
             for x in list(line.strip())
         )
         for j in range(5)
-        for line in open("./src/day15_input.txt", "r").readlines()
+        for line in open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
     ]
 
     start_pos = (0, 0)

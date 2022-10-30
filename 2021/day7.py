@@ -1,11 +1,12 @@
 import statistics
-from math import ceil
+from pathlib import PurePath
+import sys
 
 if __name__ == "__main__":
     crab_horizontal_positions = sorted(
         list(
             int(x.strip())
-            for x in open("./src/day7_input.txt", "r").readline().split(",")
+            for x in open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readline().split(",")
         )
     )
     target = int(statistics.median(crab_horizontal_positions))

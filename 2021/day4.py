@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from pathlib import PurePath
+import sys
 from typing import List
 
 
@@ -126,7 +128,7 @@ def play_bingo(boards: List[Board], random_numbers: List[int]):
 
 
 if __name__ == "__main__":
-    input = open("./src/day4_input.txt", "r")
+    input = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r")
     random_numbers = input.readline().rstrip().split(",")
     lines = input.readlines()[1:]
 

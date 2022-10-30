@@ -1,3 +1,5 @@
+from pathlib import PurePath
+import sys
 from typing import Counter, Tuple, List
 from itertools import tee
 
@@ -25,7 +27,7 @@ def process_polymer_rules(
 
 
 if __name__ == "__main__":
-    input = open("./src/day14_input.txt", "r").readlines()
+    input = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
     polymer_template = list(input[0].rstrip())
     pair_insertion_rules = [
         (tuple(list(x.split(" -> ")[0])), x.rstrip().split(" -> ")[1])

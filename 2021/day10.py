@@ -1,3 +1,5 @@
+from pathlib import PurePath
+import sys
 from typing import List, Tuple
 from statistics import median
 
@@ -13,7 +15,7 @@ def syntax_checker_find_corrupted(input: List[str]) -> Tuple[str, str]:
         else:
             last_open = open_queue.pop()
             if char != char_map[last_open]:
-                print(f"expected {char_map[last_open]}, got {char}")
+                #print(f"expected {char_map[last_open]}, got {char}")
                 return ("corrupted", invalid_char_scores[char])
     completion_chars = list(char_map[x] for x in reversed(open_queue))
     score = 0
@@ -25,7 +27,7 @@ def syntax_checker_find_corrupted(input: List[str]) -> Tuple[str, str]:
 
 if __name__ == "__main__":
     navigation_subsystem = [
-        list(line.strip()) for line in open("./src/day10_input.txt", "r").readlines()
+        list(line.strip()) for line in open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
     ]
     sum_corrupted_scores = 0
     incomplete_scores = []

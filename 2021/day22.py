@@ -1,4 +1,6 @@
 from dataclasses import dataclass
+from pathlib import PurePath
+import sys
 
 
 @dataclass
@@ -25,7 +27,7 @@ if __name__ == "__main__":
             line.rstrip().split(" ")[1].split(",")[1].split("=")[1].split(".."),
             line.rstrip().split(" ")[1].split(",")[2].split("=")[1].split(".."),
         )
-        for line in open("./src/day22_input.txt", "r").readlines()
+        for line in open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
     ]
     count_on = 0
     for instruction in instructions:
