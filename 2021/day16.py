@@ -144,7 +144,7 @@ def calculate_packet_value(packet: dict) -> int:
 
 
 if __name__ == "__main__":
-    input = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readline().rstrip()
+    input = open(PurePath(sys.argv[0]).with_suffix(".txt"), "r").readline().rstrip()
     # input = "D2FE28"
     # input = "38006F45291200"
     # input = "EE00D40C823060"

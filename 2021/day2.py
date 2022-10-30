@@ -47,7 +47,7 @@ def recalculate_position(position: Position, instruction_input: str) -> Position
 
 
 if __name__ == "__main__":
-    lines = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
+    lines = open(PurePath(sys.argv[0]).with_suffix(".txt"), "r").readlines()
     current_position = Position(0, 0)
     current_position_with_aim = Position(0, 0, 0)
     for input in lines:

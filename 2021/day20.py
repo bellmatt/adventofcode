@@ -60,10 +60,12 @@ def enhance(input: List[List[str]], algo: List[str], repeat: int) -> List[List[s
 
 
 if __name__ == "__main__":
-    algo = list(open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readline().rstrip())
+    algo = list(
+        open(PurePath(sys.argv[0]).with_suffix(".txt"), "r").readline().rstrip()
+    )
     image = [
         list(line.rstrip())
-        for line in open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()[2:]
+        for line in open(PurePath(sys.argv[0]).with_suffix(".txt"), "r").readlines()[2:]
     ]
 
     # Part 1

@@ -40,7 +40,10 @@ def simulate_fish(fishes: List[int], days=0) -> int:
 
 if __name__ == "__main__":
     fish_internal_timers = list(
-        int(x.strip()) for x in open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readline().split(",")
+        int(x.strip())
+        for x in open(PurePath(sys.argv[0]).with_suffix(".txt"), "r")
+        .readline()
+        .split(",")
     )
     # Part 1
     print(simulate_fish(fish_internal_timers, 80))

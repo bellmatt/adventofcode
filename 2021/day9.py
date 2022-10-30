@@ -177,7 +177,8 @@ def print_map(input: List[List[str]]) -> None:
 
 if __name__ == "__main__":
     heightmap = [
-        list(line.strip()) for line in open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
+        list(line.strip())
+        for line in open(PurePath(sys.argv[0]).with_suffix(".txt"), "r").readlines()
     ]
     low_points = find_low_points(heightmap)
     # Part 1

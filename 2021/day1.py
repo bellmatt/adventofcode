@@ -25,7 +25,7 @@ def get_sliding_window_measurements(
 
 
 if __name__ == "__main__":
-    lines = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
+    lines = open(PurePath(sys.argv[0]).with_suffix(".txt"), "r").readlines()
     input_list = [int(line.rstrip()) for line in lines]
     # Part 1:
     print(count_increases(input_list))

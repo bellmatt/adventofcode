@@ -39,7 +39,7 @@ def calculate_rating(input: List[str] = [], counter_index: int = 0) -> int:
 
 
 if __name__ == "__main__":
-    lines = open(PurePath(sys.argv[0]).with_suffix('.txt'), "r").readlines()
+    lines = open(PurePath(sys.argv[0]).with_suffix(".txt"), "r").readlines()
     lines = [s.strip() for s in lines]
     print(f"Part 1: Power Consumption = {calculate_power_consumption(lines)}")
     print(
