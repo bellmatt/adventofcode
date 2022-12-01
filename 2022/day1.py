@@ -1,7 +1,6 @@
 from typing import List
 import pytest
 import os
-from collections import Counter
 
 
 @pytest.fixture
