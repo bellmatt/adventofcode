@@ -35,8 +35,6 @@ class Position:
         self.is_start = char == "S"
         self.is_end = char == "E"
         self.parent = parent
-        if self.is_end:
-            print(f"Found end: {self.x},{self.y}")
 
     @property
     def height(self) -> int:
@@ -80,22 +78,17 @@ def print_map(input: List[Position]) -> None:
     print("---")
 
 
-def part1(input: List[str]) -> int:
-    heightmap: List[List[str]] = [[char for char in line.strip()] for line in input]
-    start: Optional[Position] = None
+def astar_algo(heightmap: List[List[str]], start: Position) -> int:
+    # Find the end point
     end: Optional[Position] = None
     for i, x in enumerate(heightmap):
         for j, y in enumerate(x):
-            if y == "S":
-                start = Position(y, i, j, None)
             if y == "E":
                 end = Position(y, i, j, None)
-
-    if start is None or end is None:
-        raise Exception("Can't find start or end point")
-    priority_queue: List[Position] = []
     # Use a heap to keep the "smallest" i.e. lowest cost route at the start of the list
+    priority_queue: List[Position] = []
     heapq.heappush(priority_queue, start)
+    # Positions already seen
     closed_list: List[Position] = []
     while True:
         curr_pos = heapq.heappop(priority_queue)
@@ -106,8 +99,8 @@ def part1(input: List[str]) -> int:
             while current is not None:
                 path.append(current)
                 current = current.parent
-            print(path[::-1])
-            print_map(path)
+            # print(path[::-1])
+            # print_map(path)  # for debugging
             return len(path[::-1])  # Return reversed path
         # Populate options: Up down left right
         options: List[Position] = []
@@ -154,8 +147,15 @@ def part1(input: List[str]) -> int:
             if option.height > curr_pos.height + 1:
                 continue
             # Create the f,g,h values for A* algorithm
-            option.g = curr_pos.g + (((option.x - option.parent.x) ** 2) + ((option.y - option.parent.y) ** 2))**0.5
-            option.h = (((option.x - end.x) ** 2) + ((option.y - end.y) ** 2))**0.5
+            option.g = (
+                curr_pos.g
+                + (
+                    ((option.x - option.parent.x) ** 2)
+                    + ((option.y - option.parent.y) ** 2)
+                )
+                ** 0.5
+            )
+            option.h = (((option.x - end.x) ** 2) + ((option.y - end.y) ** 2)) ** 0.5
             # check if it's already on the queue and isn't a better route
             if option in priority_queue:
                 index = priority_queue.index(option)
@@ -168,8 +168,38 @@ def part1(input: List[str]) -> int:
             heapq.heappush(priority_queue, option)
 
 
+def part1(input: List[str]) -> int:
+    heightmap: List[List[str]] = [[char for char in line.strip()] for line in input]
+    start: Optional[Position] = None
+    for i, x in enumerate(heightmap):
+        for j, y in enumerate(x):
+            if y == "S":
+                start = Position(y, i, j, None)
+    if start is None:
+        raise Exception("Can't find start or end point")
+    return astar_algo(heightmap, start)
+
+
 def part2(input: List[str]) -> int:
-    return 0
+    heightmap: List[List[str]] = [[char for char in line.strip()] for line in input]
+    start: Optional[Position] = None
+    results = []
+    for i, x in enumerate(heightmap):
+        for j, y in enumerate(x):
+            # can only start in the first row
+            if j == 0 and y == "S":
+                heightmap[i][j] = "a"
+                y = "a"
+            if j == 0 and y == "a":
+                start = Position(y, i, j, None)
+                try:
+                    result = astar_algo(heightmap, start)
+                # Protect against a's that are dead ends
+                except IndexError:
+                    continue
+                results.append(result)
+                print(f"{start}: steps = {result}")
+    return min(results)
 
 
 def get_input() -> List[str]:
@@ -179,14 +209,15 @@ def get_input() -> List[str]:
 
 def test_example1(example: List[str]) -> None:
     assert part1(example) == 31
+    assert part2(example) == 29
 
 
 def test_part1() -> None:
-    assert part1(get_input()) == 0  # 467 and 477 too high. 453 wrong
+    assert part1(get_input()) == 449
 
 
 def test_part2() -> None:
-    assert part2(get_input()) == 0
+    assert part2(get_input()) == 443
 
 
 if __name__ == "__main__":
