@@ -154,8 +154,8 @@ def part1(input: List[str]) -> int:
             if option.height > curr_pos.height + 1:
                 continue
             # Create the f,g,h values for A* algorithm
-            option.g = curr_pos.g + 1
-            option.h = ((option.x - end.x) ** 2) + ((option.y - end.y) ** 2)
+            option.g = curr_pos.g + (((option.x - option.parent.x) ** 2) + ((option.y - option.parent.y) ** 2))**0.5
+            option.h = (((option.x - end.x) ** 2) + ((option.y - end.y) ** 2))**0.5
             # check if it's already on the queue and isn't a better route
             if option in priority_queue:
                 index = priority_queue.index(option)
