@@ -37,7 +37,7 @@ Monkey 3:
     )
 
 
-def make_operation_func(input: str) -> Callable[[int],int]:
+def make_operation_func(input: str) -> Callable[[int], int]:
     calc = input.split(" = ")[1].strip()
     op = "+" if "+" in calc else "*"
     number = calc.split("+")[1].strip() if "+" in calc else calc.split("*")[1].strip()
