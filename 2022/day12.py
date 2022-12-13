@@ -47,7 +47,7 @@ class Position:
         return ord(self.char) - ord("a")
 
     def __eq__(self, other: object) -> bool:
-        if not isinstance(other,Position):
+        if not isinstance(other, Position):
             return NotImplemented
         return self.x == other.x and self.y == other.y
 
@@ -58,11 +58,26 @@ class Position:
         return self.f > other.f
 
     def __repr__(self) -> str:
-        return f"{self.char}:({self.x},{self.y})[g: {self.g}, h: {self.h}, f: {self.f}]"
+        return f"{self.char}({self.y},{self.x})"
 
     @property
     def f(self) -> int:
         return self.h + self.g
+
+
+def print_map(input: List[Position]) -> None:
+    print("map:")
+    for x in range(0, 50):
+        for y in range(0, 140):
+            visited = False
+            for p in input:
+                if p.x == x and p.y == y:
+                    print(p.char, end="")
+                    visited = True
+            if not visited:
+                print(".", end="")
+        print("")
+    print("---")
 
 
 def part1(input: List[str]) -> int:
@@ -86,12 +101,13 @@ def part1(input: List[str]) -> int:
         curr_pos = heapq.heappop(priority_queue)
         closed_list.append(curr_pos)
         if curr_pos.is_end:
-            path = []
+            path: List[Position] = []
             current = curr_pos.parent
             while current is not None:
                 path.append(current)
                 current = current.parent
             print(path[::-1])
+            print_map(path)
             return len(path[::-1])  # Return reversed path
         # Populate options: Up down left right
         options: List[Position] = []
@@ -141,17 +157,13 @@ def part1(input: List[str]) -> int:
             option.g = curr_pos.g + 1
             option.h = ((option.x - end.x) ** 2) + ((option.y - end.y) ** 2)
             # check if it's already on the queue and isn't a better route
-            if (
-                len(
-                    [
-                        node
-                        for node in priority_queue
-                        if option == node and option.g > node.g
-                    ]
-                )
-                > 0
-            ):
-                continue
+            if option in priority_queue:
+                index = priority_queue.index(option)
+                if option.g > priority_queue[index].g:
+                    continue
+                else:
+                    priority_queue.remove(option)
+
             # Add option for inspection next
             heapq.heappush(priority_queue, option)
 
@@ -170,7 +182,7 @@ def test_example1(example: List[str]) -> None:
 
 
 def test_part1() -> None:
-    assert part1(get_input()) == 0  # 467 and 477 too high
+    assert part1(get_input()) == 0  # 467 and 477 too high. 453 wrong
 
 
 def test_part2() -> None:
