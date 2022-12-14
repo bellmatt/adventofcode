@@ -21,7 +21,7 @@ def get_input() -> List[str]:
     return open(base + ".txt", "r").readlines()
 
 
-def test_example1(example: List[str]) -> None:
+def test_example(example: List[str]) -> None:
     assert part1(example) == 0
 
 
