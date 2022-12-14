@@ -1,6 +1,7 @@
 from typing import List, Tuple, Union, Any
 import pytest
 import os
+import functools
 
 
 @pytest.fixture
@@ -32,9 +33,8 @@ def example() -> List[str]:
     )
 
 
-def compare(left: Union[List[Any], int], right: Union[List[Any], int]) -> int:
-    print(f"- Compare {left} vs {right}")
-    correct = False
+def compare(left: Any, right: Any) -> int:
+    # print(f"- Compare {left} vs {right}")
     if isinstance(left, int) and isinstance(right, int):
         if int(left) < int(right):
             return 1
@@ -44,17 +44,15 @@ def compare(left: Union[List[Any], int], right: Union[List[Any], int]) -> int:
             return 0
     if isinstance(left, list) and isinstance(right, int):
         right = [right]
-    #   correct = compare(left,right)
     elif isinstance(left, int) and isinstance(right, list):
         left = [left]
-    #    correct = compare(left,right)
     if isinstance(left, list) and isinstance(right, list):
         for x in range(max(len(left), len(right))):
             if x >= len(left):
-                print("  - Left side ran out of items")
+                # print("  - Left side ran out of items")
                 return 1
             elif x >= len(right):
-                print("  - Right side ran out of items")
+                # print("  - Right side ran out of items")
                 return -1
 
             result = compare(left[x], right[x])
@@ -62,7 +60,7 @@ def compare(left: Union[List[Any], int], right: Union[List[Any], int]) -> int:
                 return 1
             if result == -1:
                 return -1
-    return correct
+    return 0
 
 
 def part1(input: List[str]) -> int:
@@ -73,14 +71,25 @@ def part1(input: List[str]) -> int:
     total = 0
     for i, pair in enumerate(pairs):
         correct_order = compare(pair[0], pair[1])
-        print(f"Inputs are {'not ' if correct_order == -1 else ''}in the right order")
+        # print(f"Inputs are {'not ' if correct_order == -1 else ''}in the right order")
         total += i + 1 if correct_order == 1 else 0
-        print(f"Total: {total}")
+        # print(f"Total: {total}")
     return total
 
 
 def part2(input: List[str]) -> int:
-    return 0
+    divider_packets = [[6]] + [[2]]
+    result = sorted(
+        [eval(line.strip()) for line in input if line.strip() != ""] + divider_packets,
+        key=functools.cmp_to_key(compare),
+        reverse=True,
+    )
+    decoder_key = 1
+    for i, line in enumerate(result):
+        if any(line == packet for packet in divider_packets):
+            decoder_key *= i + 1
+
+    return decoder_key
 
 
 def get_input() -> List[str]:
@@ -98,7 +107,7 @@ def test_part1() -> None:
 
 
 def test_part2() -> None:
-    assert part2(get_input()) == 0
+    assert part2(get_input()) == 24180
 
 
 if __name__ == "__main__":
