@@ -1,11 +1,11 @@
 <?php
 
-$example_array = explode("\n", file_get_contents("day1_example.txt"));
-$example_array_part2 = explode("\n", file_get_contents("day1_example_2.txt"));
-$array = explode("\n", file_get_contents("day1.txt"));
+$example_input = explode("\n", file_get_contents("day1_example.txt"));
+$example_input_2 = explode("\n", file_get_contents("day1_example_2.txt"));
+$input = explode("\n", file_get_contents("day1.txt"));
 
-echo calculate_calibration_values_ints($example_array) . "\n";
-echo calculate_calibration_values_ints($array) . "\n";
+echo calculate_calibration_values_ints($example_input) . "\n";
+echo calculate_calibration_values_ints($input) . "\n";
 
 function calculate_calibration_values_ints($array) {
     $total = 0;
