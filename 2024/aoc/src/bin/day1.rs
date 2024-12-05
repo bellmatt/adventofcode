@@ -2,7 +2,7 @@
 
 fn main() {
     let input = include_str!("../input/day1_example.txt");
-    //let input = include_str!("../input/day1_input.txt");
+    let input = include_str!("../input/day1_input.txt");
 
     // Parse the input into a vector of vectors
     let v: Vec<_> = input
@@ -31,11 +31,14 @@ fn main() {
 
     // Find the differences between each item in the sorted vectors
     let mut sum_differences = 0;
+    let mut similarity_score = 0;
     for i in 0..sorted.len()-1 {
         for j in 0..sorted[i].len() {
             let diff = sorted[i][j] - sorted[i+1][j];
             sum_differences += diff.abs();
+            similarity_score += transposed[i+1].iter().filter(|&n| *n == transposed[i][j]).count() as i32 * transposed[i][j];
         }
     }
-    println!("{:?}", sum_differences);
+    println!("Part 1: {:?}", sum_differences);
+    println!("Part 2: {:?}", similarity_score);
 }
