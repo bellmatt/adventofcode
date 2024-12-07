@@ -1,4 +1,54 @@
 
+fn is_increasing(row: &Vec<i32>) -> bool {
+    if contains_duplicates(row) {
+        return false;
+    }
+    let mut row_clone = row.clone();
+    row_clone.sort();
+    return *row == row_clone
+}
+
+fn contains_duplicates(row: &Vec<i32>) -> bool {
+    let mut row = row.clone();
+    row.sort();
+    for i in 0..row.len()-1 {
+        if row[i] == row[i+1] {
+            return true;
+        }
+    }
+    return false;
+}
+
+fn is_decreasing(row: &Vec<i32>) -> bool {
+    if contains_duplicates(row) {
+        return false;
+    }
+    let mut row_clone = row.clone();
+    row_clone.sort();
+    row_clone.reverse();
+    return *row == row_clone
+}
+
+fn safe_diff_amount(row: &Vec<i32>) -> bool {
+    let mut row = row.clone();
+    row.sort();
+    for i in 0..row.len()-1 {
+        let diff = (row[i] - row[i+1]).abs();
+        if diff > 3 {
+            return false;
+        }
+    }
+    return true;
+}
+
+fn is_safe(row: &Vec<i32>) -> bool {
+    if (!is_decreasing(&row) && !is_increasing(&row)) || !safe_diff_amount(&row){
+        println!("Unsafe level: {:?}", row);
+        return false;
+    }
+    return true;
+}
+
 fn main() {
     let input = include_str!("../input/day2_example.txt");
     let input = include_str!("../input/day2_input.txt");
@@ -16,28 +66,17 @@ fn main() {
 
     let mut safe_count = 0;
     for row in levels {
-        let mut safe = true;
-        let mut increasing = true;
-        let mut decreasing = true;
-        for (i, level) in row.clone().into_iter().enumerate() {
-            if (increasing || decreasing || safe) && i > 0 {
-                if level <= row[i-1] {
-                    increasing = false;
-                }
-                if level >= row[i-1] {
-                    decreasing = false;
-                }
-                if !increasing && !decreasing {
-                    safe = false;
-                }
-                let diff = (level - row[i-1]).abs();
-                if diff <= 0 || diff > 3 {
-                    safe = false;
-                }
-            }
-            if i == row.len()-1 {
-                if (increasing || decreasing) && safe == true{
+        if is_safe(&row) {
+            safe_count += 1;
+        }
+        else {
+            for i in 0..row.len() {
+                // Remove the number at i, then check if the row is safe
+                let mut row_clone = row.clone();
+                row_clone.remove(i);
+                if is_safe(&row_clone) {
                     safe_count += 1;
+                    break;
                 }
             }
         }
